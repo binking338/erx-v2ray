@@ -43,6 +43,9 @@ Install() {
 	set -i "s|^# conf-dir=/etc/dnsmasq.d|conf-dir=/etc/dnsmasq.d|" /etc/dnsmasq.conf
 	[ 0 == `grep "^conf-dir=" /etc/dnsmasq.conf|wc -l` ] && echo conf-dir=/etc/dnsmasq.d >> /etc/dnsmasq.conf
 	
+	configfile=`ls /etc/v2ray/subs/ | sort  -n | head -n 1`
+	cp -f /etc/v2ray/subs/$configfile /etc/v2ray/config.json
+
 	service v2ray start
 	service dnsmasq restart
 }
