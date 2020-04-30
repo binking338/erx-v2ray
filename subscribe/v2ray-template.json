@@ -138,8 +138,8 @@
       },
       "streamSettings": {
         "network": "$net",
-        "security": null,
-        "tlsSettings": null,
+        "security": $tls,
+        "tlsSettings": $tls_setting,
         "tcpSettings": null,
         "kcpSettings": null,
         "wsSettings": {

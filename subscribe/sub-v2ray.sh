@@ -1,4 +1,5 @@
 #!/bin/sh
+cd `dirname $0`
 decode()
 {   # accept pipe data
     rep=$(tr - + | tr _ /)
@@ -73,6 +74,13 @@ decode_protocol_link()
             if [ ! -d "$v2ray_config_output" ]; then
                 mkdir -p $v2ray_config_output
             fi
+            if [ "$j_tls" = "tls" ]; then
+                j_tls='"tls"'
+                j_tls_setting='{"allowInsecure": true,"serverName": "'$j_host'"}'
+            else
+                j_tls='null'
+                j_tls_setting='null'
+            fi
             cat $template \
             | sed "s/\$add/$j_add/g" \
             | sed "s/\$host/$j_host/g" \
@@ -81,6 +89,7 @@ decode_protocol_link()
             | sed "s/\$path/$j_path/g" \
             | sed "s/\$port/$j_port/g" \
             | sed "s/\$ps/$j_ps/g" \
+            | sed "s/\$tls_setting/$j_tls_setting/g" \
             | sed "s/\$tls/$j_tls/g" \
             | sed "s/\$v/$j_v/g" \
             | sed "s/\$aid/$j_aid/g" \

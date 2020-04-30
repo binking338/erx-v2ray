@@ -61,7 +61,7 @@ Start() {
 	[ 0 == `grep "^conf-dir=" /etc/dnsmasq.conf|wc -l` ] && echo conf-dir=/etc/dnsmasq.d >> /etc/dnsmasq.conf
 	
 	configfile=`ls /etc/v2ray/subs/ | sort  -n | head -n 1`
-    if [ ! -n "$configfile" ]; then
+    if [ -n "$configfile" ]; then
 		cp -f /etc/v2ray/subs/$configfile /etc/v2ray/config.json
     fi
 
