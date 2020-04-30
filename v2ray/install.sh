@@ -22,6 +22,14 @@ Install() {
 
 Start() {
 	echo "Start V2Ray"
+	
+	# 对局域网其他设备进行透明代理
+	iptables -t nat -D PREROUTING -p tcp -j V2RAY
+	# 对本机进行透明代理
+	iptables -t nat -D OUTPUT -p tcp -j V2RAY
+	# 清空删除V2RAY
+	iptables -t nat -F V2RAY
+	iptables -t nat -X V2RAY
 
 	# 新建一个名为 V2RAY 的链
 	iptables -t nat -N V2RAY
