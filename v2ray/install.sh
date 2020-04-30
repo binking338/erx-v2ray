@@ -54,11 +54,11 @@ Start() {
 	iptables -t nat -I OUTPUT -p tcp -j V2RAY
 	
 	sed -i "s|server=.*$|server=${UPDNS}|" /etc/dnsmasq.conf
-	[ 0 == `grep "^server=" /etc/dnsmasq.conf|wc -l` ] && echo server=$UPDNS >> /etc/dnsmasq.conf
+	[ 0 == `grep "^server=" /etc/dnsmasq.conf|wc -l` ] && echo "server=$UPDNS" >> /etc/dnsmasq.conf
 	sed -i "s|^# no-resolv|no-resolv|" /etc/dnsmasq.conf
-	[ 0 == `grep "^no-resolv" /etc/dnsmasq.conf|wc -l` ] && echo no-resolv >> /etc/dnsmasq.conf
+	[ 0 == `grep "^no-resolv" /etc/dnsmasq.conf|wc -l` ] && echo 'no-resolv' >> /etc/dnsmasq.conf
 	sed -i "s|^# conf-dir=/etc/dnsmasq.d|conf-dir=/etc/dnsmasq.d|" /etc/dnsmasq.conf
-	[ 0 == `grep "^conf-dir=" /etc/dnsmasq.conf|wc -l` ] && echo conf-dir=/etc/dnsmasq.d >> /etc/dnsmasq.conf
+	[ 0 == `grep "^conf-dir=" /etc/dnsmasq.conf|wc -l` ] && echo 'conf-dir=/etc/dnsmasq.d' >> /etc/dnsmasq.conf
 	
 	configfile=`ls /etc/v2ray/subs/ | sort  -n | head -n 1`
     if [ -n "$configfile" ]; then
@@ -66,7 +66,8 @@ Start() {
     fi
 
 	service v2ray start
-	service dnsmasq restart
+	service dnsmasq stop
+	service dnsmasq start
 
 	echo "Started"
 }
@@ -85,8 +86,9 @@ Stop() {
 	sed -i "s|^no-resolv|# no-resolv|" /etc/dnsmasq.conf
 	sed -i "s|^conf-dir=/etc/dnsmasq.d|# conf-dir=/etc/dnsmasq.d|" /etc/dnsmasq.conf
 	
-	service v2ray stop
-	service dnsmasq restart
+	#service v2ray stop
+	service dnsmasq stop
+	service dnsmasq start
 
 	echo "Stoped"
 }
