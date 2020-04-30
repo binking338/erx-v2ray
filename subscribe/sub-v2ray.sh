@@ -74,17 +74,17 @@ decode_protocol_link()
                 mkdir -p $v2ray_config_output
             fi
             cat $template \
-            | sed 's/\$add/'$j_add'/g' \
-            | sed 's/\$host/'$j_host'/g' \
-            | sed 's/\$id/'$j_id'/g' \
-            | sed 's/\$net/'$j_net'/g' \
-            | sed 's/\$path/'$j_path'/g' \
-            | sed 's/\$port/'$j_port'/g' \
-            | sed 's/\$ps/'$j_ps'/g' \
-            | sed 's/\$tls/'$j_tls'/g' \
-            | sed 's/\$v/'$j_v'/g' \
-            | sed 's/\$aid/'$j_aid'/g' \
-            | sed 's/\$type/'$j_type'/g' > ${v2ray_config_output}/${j_name}.json
+            | sed "s/\$add/$j_add/g" \
+            | sed "s/\$host/$j_host/g" \
+            | sed "s/\$id/$j_id/g" \
+            | sed "s/\$net/$j_net/g" \
+            | sed "s/\$path/$j_path/g" \
+            | sed "s/\$port/$j_port/g" \
+            | sed "s/\$ps/$j_ps/g" \
+            | sed "s/\$tls/$j_tls/g" \
+            | sed "s/\$v/$j_v/g" \
+            | sed "s/\$aid/$j_aid/g" \
+            | sed "s/\$type/$j_type/g" > ${v2ray_config_output}/${j_name}.json
         ;;
         http|https)
             curl $link | decode | while read -r line
