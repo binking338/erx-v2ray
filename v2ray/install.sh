@@ -93,6 +93,30 @@ Stop() {
 	echo "Stoped"
 }
 
+checkurl() {
+    local num=`curl -I -m 5 -s -w "%{http_code}\n" -o /dev/null $1 |egrep "(200|301|302)"|wc -l`
+
+    if [ $num -eq 1 ] 
+    then
+         echo "ok"
+    else
+         echo "$1"
+    fi
+}
+
+Diagnostic() {
+	# 网络不通
+	if [ `checkurl "http://baidu.com"` != "ok" ]; then
+		Stop
+		Start
+	fi
+
+    # 梯子断了
+	if [ `checkurl "http://google.com"` != "ok" ]; then
+		echo 重新换
+	fi
+}
+
 
 if [ "$#" = 0 ]; then
 	until
@@ -100,9 +124,10 @@ if [ "$#" = 0 ]; then
 	echo "1.Install"
 	echo "2.Start"
 	echo "3.Stop"
-	echo "4.Exit"
+	echo "4.Diagnostic"
+	echo "5.Exit"
 	read select
-	test $select = 4
+	test $select = 5
 	do
 	case $select in
 		1)
@@ -114,8 +139,11 @@ if [ "$#" = 0 ]; then
 		break;;
 		3)
 		Stop
-		exit;;
+		break;;
 		4)
+		Diagnostic
+		break;;
+		5)
 		echo "Exited"
 		exit;;
 	esac
@@ -126,6 +154,8 @@ elif [ "$#" = 1 ] && [ "$1" = "-on" ]; then
 	Start
 elif [ "$#" = 1 ] && [ "$1" = "-off" ]; then
 	Stop
+elif [ "$#" = 1 ] && [ "$1" = "-d" ]; then
+	Diagnostic
 else
     echo "Usage: $(basename "$0") -i"
     echo "Usage: $(basename "$0") -on"

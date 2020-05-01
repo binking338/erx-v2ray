@@ -50,7 +50,7 @@ unescape()
 }
 
 template="v2ray-template.json"
-v2ray_config_output="/etc/v2ray/subs"
+v2ray_config_output="./conf"
 decode_protocol_link()
 {
     link="$1"
